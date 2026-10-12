@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Ticket
-from .serializers import TicketSerializer, TicketUpdateSerializer
+from .serializers import TicketSerializer
 
 
 class TicketListCreateView(generics.ListCreateAPIView):
@@ -20,7 +20,7 @@ class TicketListCreateView(generics.ListCreateAPIView):
 
 class TicketUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ticket.objects.all()
-    serializer_class = TicketUpdateSerializer
+    serializer_class = TicketSerializer
 
     def perform_destroy(self, instance):
         instance.soft_delete()

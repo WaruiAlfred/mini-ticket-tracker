@@ -46,6 +46,19 @@ class TicketUpdateTests(APITestCase):
         ticket.refresh_from_db()
         self.assertEqual(ticket.status, 'in_progress')
 
+    def test_patch_updates_title_and_description(self):
+        ticket = Ticket.objects.create(title='Old title', description='Old description')
+        url = reverse('ticket-update', args=[ticket.id])
+
+        response = self.client.patch(
+            url, {'title': 'New title', 'description': 'New description'}, format='json'
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        ticket.refresh_from_db()
+        self.assertEqual(ticket.title, 'New title')
+        self.assertEqual(ticket.description, 'New description')
+
 
 class TicketDeleteTests(APITestCase):
     def test_delete_soft_deletes_and_hides_from_list(self):

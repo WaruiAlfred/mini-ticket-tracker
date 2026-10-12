@@ -142,7 +142,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Mini Ticket Tracker API',
-    'DESCRIPTION': 'Take-home assignment for Lodwar Services',
+    'DESCRIPTION': 'Lodwar Services',
     'VERSION': '1.0.0',
 }
 
