@@ -1,6 +1,6 @@
 # Mini Ticket Tracker
 
-A small REST API + UI for tracking support tickets — built as a take-home assignment for Lodwar Services.
+A small REST API + UI for tracking support tickets — for Lodwar Services.
 
 ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-6.1-092E20?logo=django&logoColor=white)
@@ -16,9 +16,9 @@ Create tickets, list/filter them by status, update their status or priority, and
 
 ## Live demo
 
-- Frontend: _TODO: add Vercel/Netlify URL after deploy_
-- Backend API: _TODO: add Render URL after deploy_
-- API docs (Swagger): `<backend-url>/api/docs/`
+- Frontend: [mini-ticket-tracker-818x.vercel.app](https://mini-ticket-tracker-818x.vercel.app)
+- Backend API: [mini-ticket-tracker-api.onrender.com/api](https://mini-ticket-tracker-api.onrender.com/api)
+- API docs (Swagger): [mini-ticket-tracker-api.onrender.com/api/docs](https://mini-ticket-tracker-api.onrender.com/api/docs/)
 
 ## Tech stack
 
@@ -36,7 +36,7 @@ Create tickets, list/filter them by status, update their status or priority, and
 |---|---|---|
 | `POST` | `/api/tickets` | Create a ticket |
 | `GET` | `/api/tickets` | List tickets (`?status=`, `?page=&limit=`) |
-| `PATCH` | `/api/tickets/:id` | Update a ticket's status or priority |
+| `PATCH` | `/api/tickets/:id` | Update a ticket's title, description, status, or priority |
 | `DELETE` | `/api/tickets/:id` | Soft-delete a ticket |
 | `GET` | `/api/tickets/stats` | Count of tickets grouped by status |
 
@@ -76,11 +76,13 @@ yarn dev
 - No authentication/authorization — out of scope for a CRUD demo. In production I'd add JWT-based auth with role-based access control.
 - Delete is a soft-delete (`deleted_at` timestamp + `is_active` flag, excluded from the default manager) rather than a hard delete — not required by spec, but a safer default convention; no audit/history log beyond that, which I'd add with more time.
 - Added a `BaseModel` (`created_at`, `updated_at`, `deleted_at`, `is_active`) in `tickets/models/base.py` that `Ticket` inherits from, so the soft-delete/timestamp convention is reusable if more models are added later.
+- Went beyond the spec's "change status" requirement to support full editing (title, description, priority) and deletion via the `PATCH`/`DELETE` endpoints and matching UI controls — a ticket tracker without the ability to fix a typo or remove a mistaken entry felt incomplete for real use, even though it wasn't explicitly required.
 - Tests cover the two required flows (create, stats) plus filter and update, since those are the highest-value paths, not full coverage, to respect the time-box.
 - Deployed on free-tier Render/Vercel — expect cold-start latency on the first request after idling; a known free-tier tradeoff, not a bug.
 
 ## What I'd do with more time
 
+- Kanban-style board with drag-and-drop status changes instead of a dropdown
 - JWT auth + role-based access control
 - State machine for valid status transitions
 - Audit log / ticket history
