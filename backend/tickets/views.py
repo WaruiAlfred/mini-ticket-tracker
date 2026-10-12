@@ -18,9 +18,12 @@ class TicketListCreateView(generics.ListCreateAPIView):
         return queryset
 
 
-class TicketUpdateView(generics.UpdateAPIView):
+class TicketUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketUpdateSerializer
+
+    def perform_destroy(self, instance):
+        instance.soft_delete()
 
 
 class TicketStatsView(APIView):

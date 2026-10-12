@@ -47,6 +47,20 @@ class TicketUpdateTests(APITestCase):
         self.assertEqual(ticket.status, 'in_progress')
 
 
+class TicketDeleteTests(APITestCase):
+    def test_delete_soft_deletes_and_hides_from_list(self):
+        ticket = Ticket.objects.create(title='To be removed')
+        url = reverse('ticket-update', args=[ticket.id])
+
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Ticket.objects.filter(id=ticket.id).exists())
+        deleted = Ticket.all_objects.get(id=ticket.id)
+        self.assertFalse(deleted.is_active)
+        self.assertIsNotNone(deleted.deleted_at)
+
+
 class TicketStatsTests(APITestCase):
     def test_stats_groups_by_status(self):
         Ticket.objects.create(title='A', status=Ticket.Status.OPEN)

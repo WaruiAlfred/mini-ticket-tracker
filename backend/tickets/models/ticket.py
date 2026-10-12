@@ -2,8 +2,10 @@ import uuid
 
 from django.db import models
 
+from .base import BaseModel
 
-class Ticket(models.Model):
+
+class Ticket(BaseModel):
     class Status(models.TextChoices):
         OPEN = 'open', 'Open'
         IN_PROGRESS = 'in_progress', 'In Progress'
@@ -19,7 +21,6 @@ class Ticket(models.Model):
     description = models.TextField(blank=True, default='')
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.OPEN)
     priority = models.CharField(max_length=10, choices=Priority.choices, default=Priority.MEDIUM)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-created_at']
