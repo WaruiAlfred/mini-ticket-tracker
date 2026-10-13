@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
+import { getErrorMessage } from '../api/errors'
 import { deleteTicket, updateTicket } from '../api/tickets'
 import type { Priority, Status, Ticket } from '../types'
 import { PriorityBadge } from './PriorityBadge'
@@ -26,15 +28,27 @@ export function TicketRow({ ticket }: { ticket: Ticket }) {
       invalidate()
       setIsEditing(false)
     },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Couldn't update ticket"))
+    },
   })
 
   const deleteMutation = useMutation({
     mutationFn: deleteTicket,
     onSuccess: invalidate,
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Couldn't delete ticket"))
+    },
   })
 
   function handleSave() {
     updateMutation.mutate({ id: ticket.id, title, description })
+  }
+
+  function handleEdit() {
+    setTitle(ticket.title)
+    setDescription(ticket.description)
+    setIsEditing(true)
   }
 
   function handleCancel() {
@@ -107,21 +121,26 @@ export function TicketRow({ ticket }: { ticket: Ticket }) {
         <PriorityBadge priority={ticket.priority} />
         <StatusBadge status={ticket.status} />
         <select
-          value={ticket.status}
-          onChange={(e) =>
-            updateMutation.mutate({ id: ticket.id, status: e.target.value as Status })
-          }
+          value=""
+          onChange={(e) => {
+            if (e.target.value) {
+              updateMutation.mutate({ id: ticket.id, status: e.target.value as Status })
+            }
+          }}
           disabled={updateMutation.isPending}
           className="rounded-md border border-gray-300 px-2 py-1 text-xs focus:border-accent focus:outline-none disabled:opacity-50"
         >
-          {STATUS_OPTIONS.map((status) => (
+          <option value="" disabled>
+            Change status…
+          </option>
+          {STATUS_OPTIONS.filter((status) => status !== ticket.status).map((status) => (
             <option key={status} value={status}>
               Move to {status.replace('_', ' ')}
             </option>
           ))}
         </select>
         <button
-          onClick={() => setIsEditing(true)}
+          onClick={handleEdit}
           aria-label="Edit ticket"
           title="Edit"
           className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100"
