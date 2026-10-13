@@ -1590,6 +1590,11 @@ shebang-regex@^3.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
+sonner@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/sonner/-/sonner-2.0.8.tgz#dbfa02bb4eb0924616800a4594e9a455a9a195ac"
+  integrity sha512-UM/ByIoFra8yzV75n1o0Puu0bw5U/9UNnDacrJNspekBewIfsQ3D6ez1nvlWpt7aTsO6rujQtifBpycwIivqlg==
+
 source-map-js@^1.2.1, source-map-js@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.2.tgz#79fb88d97535a21cb27162cb05d211b67acea4ab"

@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { toast } from 'sonner'
+import { getErrorMessage } from '../api/errors'
 import { createTicket } from '../api/tickets'
 import type { Priority } from '../types'
 
@@ -17,6 +19,10 @@ export function TicketForm() {
       setTitle('')
       setDescription('')
       setPriority('medium')
+      toast.success('Ticket created')
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Couldn't create ticket"))
     },
   })
 
@@ -62,9 +68,6 @@ export function TicketForm() {
           {mutation.isPending ? 'Adding…' : 'Add ticket'}
         </button>
       </div>
-      {mutation.isError && (
-        <p className="mt-2 text-xs text-red-600">Couldn&apos;t create ticket. Please try again.</p>
-      )}
     </form>
   )
 }
